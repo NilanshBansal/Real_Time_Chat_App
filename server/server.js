@@ -14,6 +14,17 @@ app.use(express.static(publicPath));
 
 io.on('connection',function(socket){
     console.log("new user connected !");
+    socket.emit('newMessage',{
+        from:'admin',
+        text:'Welcome to the chat app!',
+        createAt:new Date().getTime()
+    });
+    
+    socket.broadcast.emit('newMessage',{
+        from:'admin',
+        text:'New User Joined!',
+        createAt:new Date().getTime()
+    });
 
     socket.on('createMessage',(message)=>{
         console.log('newMessage',message);
@@ -22,6 +33,14 @@ io.on('connection',function(socket){
             text:message.text,
             createAt:new Date().getTime()
         });
+
+        //Everyone gets this event except the sender
+        // socket.broadcast.emit('newMessage',{
+        //     from:message.from,
+        //     text:message.text,
+        //     createAt:new Date().getTime()
+        // });
+
     });
 
     socket.on('disconnect',function(){
