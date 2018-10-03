@@ -22,7 +22,7 @@ io.on('connection',function(socket){
     socket.on('createMessage',(message,callback)=>{
         console.log('newMessage',message);
         io.emit('newMessage',generateMessage(message.from,message.text));
-        callback('Data from server!');
+        callback();
         //Everyone gets this event except the sender
         // socket.broadcast.emit('newMessage',{
         //     from:message.from,
