@@ -19,10 +19,10 @@ io.on('connection',function(socket){
     
     socket.broadcast.emit('newMessage',generateMessage('Admin','New User Joined!'));
 
-    socket.on('createMessage',(message)=>{
+    socket.on('createMessage',(message,callback)=>{
         console.log('newMessage',message);
         io.emit('newMessage',generateMessage(message.from,message.text));
-
+        callback('Data from server!');
         //Everyone gets this event except the sender
         // socket.broadcast.emit('newMessage',{
         //     from:message.from,
