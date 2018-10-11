@@ -45,7 +45,12 @@ io.on('connection',function(socket){
     });
 
     socket.on('createMessage',(message,callback)=>{
-        io.emit('newMessage',generateMessage(message.from,message.text));
+        var user = users.getUser(socket.id);
+
+        if(user && isRealString(message.text)){
+            io.to(user.room).emit('newMessage',generateMessage(user.name,message.text));
+        }   
+
         callback();
         //Everyone gets this event except the sender
         // socket.broadcast.emit('newMessage',{
